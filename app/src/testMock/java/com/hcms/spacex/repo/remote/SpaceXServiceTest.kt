@@ -7,14 +7,10 @@ import com.hcms.spacex.repo.remote.dto.Headquarters
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.TestObserver
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.fail
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,22 +38,9 @@ class SpaceXServiceTest {
     @Inject
     lateinit var subject: SpaceXService
 
-    private lateinit var resultsObserver: Observer<CompanyInfoDTO>
-    private lateinit var testObserver: TestObserver<CompanyInfoDTO>
-
-    private var searchResults: CompanyInfoDTO? = null
-
     @Before
     fun setup() {
         hiltRule.inject()
-        resultsObserver = object : Observer<CompanyInfoDTO> {
-            override fun onSubscribe(d: Disposable) {}
-            override fun onNext(t: CompanyInfoDTO) { searchResults = t }
-            override fun onError(e: Throwable) { fail("api error") }
-            override fun onComplete() { println("onComplete called") }
-        }
-
-        testObserver = TestObserver(resultsObserver)
         server = MockWebServer()
     }
 
@@ -100,6 +83,25 @@ class SpaceXServiceTest {
             .blockingGet()
 
         assertEquals(expectedResult, actualResult)
+    }
+
+    @Test
+    fun `Given json mockResponse When getAllLaunches invoked Then DTO matches json contents`() {
+        val expectedLaunchesNumber = 111
+        val expectedFirstMissionName = "FalconSat"
+        val expectedLastMissionName = "SXM-7"
+        prepareMockServerResponse(
+            responseBodyPath = "/all_launches_mock_response.json",
+            responseCode = 200
+        )
+
+        val actualResult = subject.getAllLaunches().blockingGet()
+        val actualFirstMissionName = actualResult.first()?.missionName
+        val actualLastMissionName = actualResult.last()?.missionName
+
+        assertEquals(expectedLaunchesNumber, actualResult.size)
+        assertEquals(expectedFirstMissionName, actualFirstMissionName)
+        assertEquals(expectedLastMissionName, actualLastMissionName)
     }
 
     private fun prepareMockServerResponse(responseBodyPath: String, responseCode: Int) {
