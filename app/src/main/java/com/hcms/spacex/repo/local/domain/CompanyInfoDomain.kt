@@ -1,6 +1,8 @@
 package com.hcms.spacex.repo.local.domain
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "companies")
 data class CompanyInfoDomain(
@@ -18,8 +20,9 @@ data class CompanyInfoDomain(
     val employees: Int? = null,
     val testSites: Int? = null,
     val cto: String? = null,
-    val ctoPropulsion: String? = null
-)
+    val ctoPropulsion: String? = null,
+    override var modifiedAt: Long
+) : TimestampedEntity()
 
 data class HeadquartersDomain(
     val address: String? = null,
