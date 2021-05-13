@@ -350,7 +350,7 @@ data class OrbitParams(
 	val longitude: Any? = null
 )
 
-data class LaunchItem(
+data class LaunchItemDTO(
 
 	@field:SerializedName("mission_name")
 	val missionName: String? = null,

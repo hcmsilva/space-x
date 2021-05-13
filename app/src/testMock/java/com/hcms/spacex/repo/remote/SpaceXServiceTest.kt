@@ -10,7 +10,7 @@ import dagger.hilt.android.testing.HiltTestApplication
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -96,8 +96,8 @@ class SpaceXServiceTest {
         )
 
         val actualResult = subject.getAllLaunches().blockingGet()
-        val actualFirstMissionName = actualResult.first()?.missionName
-        val actualLastMissionName = actualResult.last()?.missionName
+        val actualFirstMissionName = actualResult.first().missionName
+        val actualLastMissionName = actualResult.last().missionName
 
         assertEquals(expectedLaunchesNumber, actualResult.size)
         assertEquals(expectedFirstMissionName, actualFirstMissionName)

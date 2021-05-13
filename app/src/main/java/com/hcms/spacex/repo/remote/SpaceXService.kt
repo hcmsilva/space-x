@@ -1,7 +1,7 @@
 package com.hcms.spacex.repo.remote
 
 import com.hcms.spacex.repo.remote.dto.CompanyInfoDTO
-import com.hcms.spacex.repo.remote.dto.LaunchItem
+import com.hcms.spacex.repo.remote.dto.LaunchItemDTO
 import io.reactivex.Single
 import retrofit2.http.GET
 
@@ -10,5 +10,5 @@ interface SpaceXService {
     fun getCompanyInfo(): Single<CompanyInfoDTO>
 
     @GET("v3/launches")
-    fun getAllLaunches(): Single<List<LaunchItem?>>
+    fun getAllLaunches(): Single<List<LaunchItemDTO>>
 }

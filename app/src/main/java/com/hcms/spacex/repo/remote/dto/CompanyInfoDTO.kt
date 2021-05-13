@@ -32,7 +32,7 @@ data class CompanyInfoDTO(
     val valuation: Long? = null,
 
     @field:SerializedName("name")
-    val name: String? = null,
+    val name: String,
 
     @field:SerializedName("employees")
     val employees: Int? = null,
