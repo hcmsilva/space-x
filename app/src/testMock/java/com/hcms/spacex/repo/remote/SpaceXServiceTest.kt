@@ -88,8 +88,7 @@ class SpaceXServiceTest {
     @Test
     fun `Given json mockResponse When getAllLaunches invoked Then DTO matches json contents`() {
         val expectedLaunchesNumber = 111
-        val expectedFirstMissionName = "FalconSat"
-        val expectedLastMissionName = "SXM-7"
+
         prepareMockServerResponse(
             responseBodyPath = "/all_launches_mock_response.json",
             responseCode = 200
@@ -97,11 +96,32 @@ class SpaceXServiceTest {
 
         val actualResult = subject.getAllLaunches().blockingGet()
         val actualFirstMissionName = actualResult.first().missionName
-        val actualLastMissionName = actualResult.last().missionName
+        val actualLaunchYear = actualResult.first().launchYear
+        val actualLaunchDateUtc = actualResult.first().launchDateUtc
+        val actualLaunchDateUnix = actualResult.first().launchDateUnix
+        val actualRocketType = actualResult.first().rocket?.rocketType
+        val actualRocketName = actualResult.first().rocket?.rocketName
+        val actualLaunchSuccess = actualResult.first().launchSuccess
+        val actualWikipedia = actualResult.first().links?.wikipedia
+
+        val expectedFirstMissionName = "FalconSat"
+        val expectedLaunchYear = "2006"
+        val expectedLaunchDateUtc = "2006-03-24T22:30:00.000Z"
+        val expectedLaunchDateUnix = 1143239400
+        val expectedRocketType = "Merlin A"
+        val expectedRocketName = "Falcon 1"
+        val expectedLaunchSuccess = false
+        val expectedWikipedia = "https://en.wikipedia.org/wiki/DemoSat"
 
         assertEquals(expectedLaunchesNumber, actualResult.size)
         assertEquals(expectedFirstMissionName, actualFirstMissionName)
-        assertEquals(expectedLastMissionName, actualLastMissionName)
+        assertEquals(expectedLaunchYear, actualLaunchYear)
+        assertEquals(expectedLaunchDateUtc, actualLaunchDateUtc)
+        assertEquals(expectedLaunchDateUnix, actualLaunchDateUnix)
+        assertEquals(expectedRocketType, actualRocketType)
+        assertEquals(expectedRocketName, actualRocketName)
+        assertEquals(expectedLaunchSuccess, actualLaunchSuccess)
+        assertEquals(expectedWikipedia, actualWikipedia)
     }
 
     private fun prepareMockServerResponse(responseBodyPath: String, responseCode: Int) {
