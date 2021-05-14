@@ -22,8 +22,8 @@ class LaunchItemDAOTest : TestCase() {
     private lateinit var database: LaunchesDatabase
     private lateinit var subject: LaunchItemDAO
 
-    val originalTimestamp: Long = 1L
-    val updatedTimestamp: Long = 1L + 1
+    private val originalTimestamp: Long = 1L
+    private val updatedTimestamp: Long = 1L + 1
 
     @Before
     fun initDb() {
