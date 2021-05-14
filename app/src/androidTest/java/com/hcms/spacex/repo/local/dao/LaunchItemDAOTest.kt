@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hcms.spacex.repo.local.LaunchesDatabase
 import com.hcms.spacex.repo.local.domain.LaunchItemDomain
-import junit.framework.TestCase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -14,7 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class LaunchItemDAOTest : TestCase() {
+class LaunchItemDAOTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -79,7 +78,7 @@ class LaunchItemDAOTest : TestCase() {
 
         subject.loadList()
             .test()
-            .assertValue { it ->
+            .assertValue {
                 it.contains(expectedLaunch)
                 it.any { launch -> launch.modifiedAt == originalTimestamp }
             }
