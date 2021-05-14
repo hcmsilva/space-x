@@ -7,11 +7,6 @@ import io.reactivex.Flowable
 
 @Dao
 abstract class LaunchItemDAO : TimestampedDAO<LaunchItemDomain>() {
-//    @Insert(onConflict = REPLACE)
-//    abstract fun save(companyInfo: CompanyInfoDomain): Completable
-
-//    @Query("SELECT * FROM companies WHERE name = :companyName")
-//    abstract fun load(companyName: String): Flowable<LaunchItemDomain>
 
     @Query("SELECT * FROM launches")
     abstract fun loadList(): Flowable<List<LaunchItemDomain>>
