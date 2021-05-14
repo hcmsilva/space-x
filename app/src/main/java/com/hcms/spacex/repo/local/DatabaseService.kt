@@ -20,7 +20,7 @@ class DatabaseServiceImpl @Inject constructor(
     private val launchesDAO: LaunchItemDAO
 ) : DatabaseService {
     override fun save(companyInfo: CompanyInfoDomain): Completable =
-        companyInfoDAO.save(companyInfo)
+        companyInfoDAO.saveWithTimestamp(companyInfo)
 
     override fun save(allLaunches: List<LaunchItemDomain>): Completable =
         launchesDAO.saveWithTimestamp(allLaunches)
