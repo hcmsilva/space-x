@@ -18,6 +18,10 @@ class RepositoryTest {
 
     }
 
+    fun `Given stale cached companyInfo When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
+
+    }
+
     fun `Given previously cached launchItems When repo getCompanyInfo invoked Then web service NOT invoked And db service save NOT invoked`() {
 
     }
@@ -31,6 +35,10 @@ class RepositoryTest {
     }
 
     fun `Given NO previously cached launchItems When repo getCompanyInfo invoked Then web service invoked company info returned into stream`() {
+
+    }
+
+    fun `Given stale cached launchItems When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
 
     }
 
