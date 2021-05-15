@@ -52,4 +52,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/company_info" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/launches_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/launches_divider"
+        tools:listitem="@layout/launch_item_row" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
