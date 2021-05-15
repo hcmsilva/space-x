@@ -30,20 +30,12 @@ object RepoTestHelper {
     }
 
     fun commonSetupMockCompanyInfoDomain(mock: CompanyInfoDomain) {
-        every { mock.summary } returns "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets."
-        every { mock.coo } returns "Gwynne Shotwell"
         every { mock.founder } returns "Elon Musk"
         every { mock.founded } returns 2002
-        every { mock.vehicles } returns 3
-        every { mock.ceo } returns "Elon Musk"
         every { mock.launchSites } returns 3
-        every { mock.headquarters } returns null
         every { mock.valuation } returns 27500000000
         every { mock.name } returns "SpaceX"
         every { mock.employees } returns 7000
-        every { mock.testSites } returns 1
-        every { mock.cto } returns "Elon Musk"
-        every { mock.ctoPropulsion } returns "Tom Mueller"
         every { mock.modifiedAt } returns 0L
     }
 

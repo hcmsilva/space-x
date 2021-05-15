@@ -8,12 +8,8 @@ import com.hcms.spacex.repo.remote.dto.LaunchItemDTO
 internal fun CompanyInfoDTO.toDomain(): CompanyInfoDomain {
     return CompanyInfoDomain(
         name = name,
-        summary = summary,//
-        coo = coo,//
         founder = founder,
         founded = founded,
-        vehicles = vehicles,//
-        ceo = ceo,//
         launchSites = launchSites,
         valuation = valuation,
         employees = employees,
