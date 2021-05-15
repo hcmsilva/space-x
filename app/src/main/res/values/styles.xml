@@ -5,4 +5,20 @@
         <item name="android:background">@color/toolbar_background</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
+
+    <style name="spacex_toolbar_title" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="spacex_content_title_divider" parent="@style/TextAppearance.AppCompat.Medium">
+
+        <item name="android:gravity">start</item>
+        <item name="android:background">@color/content_divider_background</item>
+        <item name="android:textColor">@color/content_divider_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingStart">5dp</item>
+    </style>
+
+
 </resources>
