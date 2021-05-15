@@ -33,6 +33,16 @@
         app:layout_constraintTop_toBottomOf="@id/spacex_toolbar" />
 
     <TextView
+        android:id="@+id/company_info"
+        style="@style/spacex_text_body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/company_info_divider"
+        tools:text="@string/company_info_placeholder" />
+
+    <TextView
         android:id="@+id/launches_divider"
         style="@style/spacex_content_title_divider"
         android:layout_width="0dp"
@@ -40,6 +50,6 @@
         android:text="@string/launches"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/company_info_divider" />
+        app:layout_constraintTop_toBottomOf="@id/company_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

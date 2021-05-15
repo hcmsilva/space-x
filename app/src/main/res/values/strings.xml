@@ -2,4 +2,5 @@
     <string name="app_name">SpaceX</string>
     <string name="company">Company</string>
     <string name="launches">Launches</string>
+    <string name="company_info_placeholder">{companyName} was founded by {founderName} in {year}. It has now {employees} employees, {launch_sites} launch sites, and is valued at USD {valuation}</string>
 </resources>

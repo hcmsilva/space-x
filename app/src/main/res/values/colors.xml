@@ -14,4 +14,5 @@
     <color name="toolbar_background">@android:color/background_light</color>
     <color name="content_divider_background">@color/spec_dark_gray</color>
     <color name="content_divider_text">@android:color/white</color>
+    <color name="content_text">@color/black</color>
 </resources>
