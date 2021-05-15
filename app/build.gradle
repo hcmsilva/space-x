@@ -32,11 +32,13 @@ android {
             dimension "environment"
             applicationIdSuffix = ".mock"
             buildConfigField 'String', "BASE_URL", "\"http://127.0.0.1:8080\""
+            buildConfigField 'long', "CACHE_VALIDITY", '5000L'
         }
 
         prod {
             dimension "environment"
             buildConfigField 'String', "BASE_URL", "\"https://api.spacexdata.com/\""
+            buildConfigField 'long', "CACHE_VALIDITY", '60000L'
         }
     }
 
