@@ -5,6 +5,7 @@ import com.hcms.spacex.repo.local.domain.CompanyInfoDomain
 import com.hcms.spacex.repo.local.domain.LaunchItemDomain
 import com.hcms.spacex.repo.remote.SpaceXService
 import com.hcms.spacex.repo.remote.dto.CompanyInfoDTO
+import com.hcms.spacex.repo.remote.dto.LaunchItemDTO
 import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
@@ -19,6 +20,7 @@ class RepositoryTest {
 
     private lateinit var apiClient: SpaceXService
     private lateinit var dbClient: DatabaseService
+    private lateinit var cacheValidator: CacheValidator
 
     private lateinit var subject: Repository
 
@@ -26,10 +28,15 @@ class RepositoryTest {
     fun setup() {
         apiClient = mockk()
         dbClient = mockk()
+        cacheValidator = mockk()
+
+        every { cacheValidator.cacheIsStale(any<List<CompanyInfoDomain>>()) } returns false
+        every { cacheValidator.cacheIsStale(any<List<LaunchItemDomain>>()) } returns false
 
         subject = Repository(
             apiClient = apiClient,
-            dbClient = dbClient
+            dbClient = dbClient,
+            cacheValidator = cacheValidator
         )
     }
 
@@ -72,8 +79,7 @@ class RepositoryTest {
     fun `Given NO previously cached companyInfo When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
         val companyName = "Android Ltd."
         val downloadedCompanyInfo: CompanyInfoDTO = mockk()
-
-        commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
+        RepoTestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(emptyList())
         every { apiClient.getCompanyInfo() } returns Single.just(downloadedCompanyInfo)
@@ -90,9 +96,9 @@ class RepositoryTest {
     fun `Given NO previously cached companyInfo When repo getCompanyInfo invoked Then web service invoked company info returned into stream And cache updated`() {
         val companyName = "Android Ltd."
         val downloadedCompanyInfo: CompanyInfoDTO = mockk()
-        commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
+        RepoTestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
         val expectedResult: CompanyInfoDomain = mockk()
-        setupExpectedResult(expectedResult)
+        RepoTestHelper.commonSetupMockCompanyInfoDomain(expectedResult)
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(emptyList())
         every { apiClient.getCompanyInfo() } returns Single.just(downloadedCompanyInfo)
@@ -114,11 +120,29 @@ class RepositoryTest {
 
     @Test
     fun `Given stale cached companyInfo When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
+        val companyName = "Android Ltd."
+        val cachedCompanyInfo: CompanyInfoDomain = mockk()
 
+        every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(
+            listOf(
+                cachedCompanyInfo
+            )
+        )
+        val downloadedCompanyInfo: CompanyInfoDTO = mockk()
+        RepoTestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
+        every { cacheValidator.cacheIsStale(listOf(cachedCompanyInfo)) } returns true
+        every { apiClient.getCompanyInfo() } returns Single.just(downloadedCompanyInfo)
+        every { dbClient.save(any<CompanyInfoDomain>()) } returns Completable.complete()
+
+        subject.getCompanyInfo(companyName)
+            .test()
+
+        verify { apiClient.getCompanyInfo() }
+        verify { dbClient.save(any<CompanyInfoDomain>()) }
     }
 
     @Test
-    fun `Given previously cached launchItems When repo getCompanyInfo invoked Then web service NOT invoked And db service save NOT invoked`() {
+    fun `Given previously cached launchItems When repo getAllLaunches invoked Then web service NOT invoked And db service save NOT invoked`() {
         val cachedLaunchItem1: LaunchItemDomain = mockk()
         val cachedLaunchItem2: LaunchItemDomain = mockk()
         val cachedLaunchItem3: LaunchItemDomain = mockk()
@@ -136,7 +160,7 @@ class RepositoryTest {
     }
 
     @Test
-    fun `Given previously cached launchItems When repo getCompanyInfo invoked Then cached data returned into flowable stream`() {
+    fun `Given previously cached launchItems When repo getAllLaunches invoked Then cached data returned into flowable stream`() {
         val cachedLaunchItem: LaunchItemDomain = mockk()
 
         every { dbClient.loadAllLaunches() } returns Flowable.just(listOf(cachedLaunchItem))
@@ -150,71 +174,67 @@ class RepositoryTest {
     }
 
     @Test
-    fun `Given NO previously cached launchItems When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
+    fun `Given NO previously cached launchItems When repo getAllLaunches invoked Then web service invoked And db service save invoked for caching`() {
+        val downloadedLaunchItem: LaunchItemDTO = mockk()
+        RepoTestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
 
+        every { dbClient.loadAllLaunches() } returns Flowable.just(emptyList())
+        every { apiClient.getAllLaunches() } returns Single.just(listOf(downloadedLaunchItem))
+        every { dbClient.save(any<List<LaunchItemDomain>>()) } returns Completable.complete()
+
+        subject.getAllLaunches()
+            .test()
+            .assertValueCount(1)
+
+        verify { apiClient.getAllLaunches() }
+        verify { dbClient.save(any<List<LaunchItemDomain>>()) }
     }
 
     @Test
-    fun `Given NO previously cached launchItems When repo getCompanyInfo invoked Then web service invoked company info returned into stream`() {
+    fun `Given NO previously cached launchItems When repo getAllLaunches invoked Then web service invoked company info returned into stream`() {
+        val downloadedLaunchItem: LaunchItemDTO = mockk()
+        RepoTestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
+        val expectedResult: LaunchItemDomain = mockk()
+        RepoTestHelper.commonSetupMockLaunchItemDomain(expectedResult)
 
+        every { dbClient.loadAllLaunches() } returns Flowable.just(emptyList())
+        every { apiClient.getAllLaunches() } returns Single.just(listOf(downloadedLaunchItem))
+        every { dbClient.save(any<List<LaunchItemDomain>>()) } returns Completable.complete()
+
+        subject.getAllLaunches()
+            .test()
+            .assertValueCount(1)
+            .assertValue {
+                it.any { launch ->
+                    launch.missionName == expectedResult.missionName &&
+                            launch.launchYear == expectedResult.launchYear &&
+                            launch.rocketType == expectedResult.rocketType &&
+                            launch.rocketName == expectedResult.rocketName &&
+                            launch.launchSuccess == expectedResult.launchSuccess &&
+                            launch.wikipedia == expectedResult.wikipedia &&
+                            launch.videoLink == expectedResult.videoLink &&
+                            launch.missionPatchSmall == expectedResult.missionPatchSmall &&
+                            launch.upcoming == expectedResult.upcoming
+                }
+            }
     }
 
     @Test
-    fun `Given stale cached launchItems When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
+    fun `Given stale cached launchItems When repo getAllLaunches invoked Then web service invoked And db service save invoked for caching`() {
+        val cachedLaunchItem1: LaunchItemDomain = mockk()
+        val cachedList = listOf(cachedLaunchItem1)
+        val downloadedLaunchItem: LaunchItemDTO = mockk()
+        RepoTestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
+        every { dbClient.loadAllLaunches() } returns Flowable.just(cachedList)
+        every { cacheValidator.cacheIsStale(cachedList) } returns true
+        every { apiClient.getAllLaunches() } returns Single.just(listOf(downloadedLaunchItem))
+        every { dbClient.save(any<List<LaunchItemDomain>>()) } returns Completable.complete()
 
+        subject.getAllLaunches()
+            .test()
+            .assertValueCount(1)
+
+        verify { apiClient.getAllLaunches() }
+        verify { dbClient.save(any<List<LaunchItemDomain>>()) }
     }
-
-
-    private fun commonSetupMockCompanyInfoDTO(downloadedCompanyInfo: CompanyInfoDTO) {
-        every { downloadedCompanyInfo.summary } returns "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets."
-        every { downloadedCompanyInfo.coo } returns "Gwynne Shotwell"
-        every { downloadedCompanyInfo.founder } returns "Elon Musk"
-        every { downloadedCompanyInfo.founded } returns 2002
-        every { downloadedCompanyInfo.vehicles } returns 3
-        every { downloadedCompanyInfo.ceo } returns "Elon Musk"
-        every { downloadedCompanyInfo.launchSites } returns 3
-        every { downloadedCompanyInfo.headquarters } returns null
-        every { downloadedCompanyInfo.valuation } returns 27500000000
-        every { downloadedCompanyInfo.name } returns "SpaceX"
-        every { downloadedCompanyInfo.employees } returns 7000
-        every { downloadedCompanyInfo.testSites } returns 1
-        every { downloadedCompanyInfo.cto } returns "Elon Musk"
-        every { downloadedCompanyInfo.ctoPropulsion } returns "Tom Mueller"
-
-    }
-
-    private fun setupExpectedResult(expectedSavedCache: CompanyInfoDomain) {
-        every { expectedSavedCache.summary } returns "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets."
-        every { expectedSavedCache.coo } returns "Gwynne Shotwell"
-        every { expectedSavedCache.founder } returns "Elon Musk"
-        every { expectedSavedCache.founded } returns 2002
-        every { expectedSavedCache.vehicles } returns 3
-        every { expectedSavedCache.ceo } returns "Elon Musk"
-        every { expectedSavedCache.launchSites } returns 3
-        every { expectedSavedCache.headquarters } returns null
-        every { expectedSavedCache.valuation } returns 27500000000
-        every { expectedSavedCache.name } returns "SpaceX"
-        every { expectedSavedCache.employees } returns 7000
-        every { expectedSavedCache.testSites } returns 1
-        every { expectedSavedCache.cto } returns "Elon Musk"
-        every { expectedSavedCache.ctoPropulsion } returns "Tom Mueller"
-        every { expectedSavedCache.modifiedAt } returns 0L
-    }
-
-    private fun buildDummyCompanyInfoDto() = CompanyInfoDTO(
-        summary = "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets.",
-        coo = "Gwynne Shotwell",
-        founder = "Elon Musk",
-        founded = 2002,
-        vehicles = 3,
-        ceo = "Elon Musk",
-        launchSites = 3,
-        headquarters = null,
-        valuation = 27500000000,
-        name = "SpaceX",
-        employees = 7000,
-        testSites = 1,
-        cto = "Elon Musk",
-        ctoPropulsion = "Tom Mueller"
-    )
 }

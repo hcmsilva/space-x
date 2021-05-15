@@ -15,13 +15,14 @@ import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val apiClient: SpaceXService,
-    private val dbClient: DatabaseService
+    private val dbClient: DatabaseService,
+    private val cacheValidator: CacheValidator
 ) : IRepo {
 
     override fun getCompanyInfo(companyName: String): Flowable<List<CompanyInfoDomain>> {
         return dbClient.loadCompanyInfo(companyName)
             .flatMap { localData ->
-                if (localData.isEmpty()) {
+                if (localData.isEmpty() || cacheValidator.cacheIsStale(localData)) {
                     remoteLoadAndCacheCompanyInfo()
                 } else {
                     Flowable.just(localData)
@@ -32,7 +33,7 @@ class Repository @Inject constructor(
     override fun getAllLaunches(): Flowable<List<LaunchItemDomain>> {
         return dbClient.loadAllLaunches()
             .flatMap { localData ->
-                if (localData.isEmpty()) {
+                if (localData.isEmpty() || cacheValidator.cacheIsStale(localData)) {
                     remoteLoadAndCacheAllLaunches()
                 } else {
                     Flowable.just(localData)
