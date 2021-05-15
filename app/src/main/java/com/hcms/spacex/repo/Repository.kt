@@ -12,7 +12,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import javax.inject.Inject
 
-// TODO THIS LAYER CAN'T KNOW / EXPOSE DTO / DAO
+
 class Repository @Inject constructor(
     private val apiClient: SpaceXService,
     private val dbClient: DatabaseService
@@ -52,10 +52,10 @@ class Repository @Inject constructor(
             .map { item -> item.toDomain() }
             .toFlowable()
 
-    fun saveDTOLocally(companyInfo: CompanyInfoDTO): Completable =
+    private fun saveDTOLocally(companyInfo: CompanyInfoDTO): Completable =
         dbClient.save(companyInfo.toDomain())
 
-    internal fun saveDTOLocally(launchItemDTOList: List<LaunchItemDTO>): Completable =
+    private fun saveDTOLocally(launchItemDTOList: List<LaunchItemDTO>): Completable =
         dbClient.save(launchItemDTOList.toDomain())
 
 
