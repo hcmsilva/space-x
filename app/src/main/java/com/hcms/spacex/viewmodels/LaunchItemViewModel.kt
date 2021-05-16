@@ -1,4 +1,4 @@
-package com.hcms.spacex.model
+package com.hcms.spacex.viewmodels
 
 import com.hcms.spacex.R
 import com.hcms.spacex.ui.utils.ResourceProvider

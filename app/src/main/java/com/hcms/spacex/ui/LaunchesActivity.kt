@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hcms.spacex.R
-import com.hcms.spacex.model.CompanyInfoViewModel
-import com.hcms.spacex.model.LaunchesViewModel
 import com.hcms.spacex.ui.adapters.LaunchesAdapter
-import com.hcms.spacex.ui.mappers.toLaunchItemList
 import com.hcms.spacex.ui.utils.ResourceProvider
+import com.hcms.spacex.viewmodels.CompanyInfoViewModel
+import com.hcms.spacex.viewmodels.LaunchesViewModel
+import com.hcms.spacex.viewmodels.mappers.toLaunchItemList
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_launches.*
 

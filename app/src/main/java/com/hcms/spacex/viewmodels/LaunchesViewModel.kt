@@ -1,4 +1,4 @@
-package com.hcms.spacex.model
+package com.hcms.spacex.viewmodels
 
 import androidx.lifecycle.*
 import com.hcms.spacex.repo.ILaunchesRepo

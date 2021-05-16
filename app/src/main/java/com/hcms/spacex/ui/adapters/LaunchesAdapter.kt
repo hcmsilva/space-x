@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hcms.spacex.R
-import com.hcms.spacex.model.LaunchItemViewModel
 import com.hcms.spacex.ui.adapters.LaunchesAdapter.LaunchViewHolder
+import com.hcms.spacex.viewmodels.LaunchItemViewModel
 import kotlinx.android.synthetic.main.launch_item_row.view.*
 
 class LaunchesAdapter(context: Context) : RecyclerView.Adapter<LaunchViewHolder>() {

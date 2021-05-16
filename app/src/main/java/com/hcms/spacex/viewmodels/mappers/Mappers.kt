@@ -1,8 +1,8 @@
-package com.hcms.spacex.ui.mappers
+package com.hcms.spacex.viewmodels.mappers
 
-import com.hcms.spacex.model.LaunchItemViewModel
 import com.hcms.spacex.repo.local.domain.LaunchItemDomain
 import com.hcms.spacex.ui.utils.ResourceProvider
+import com.hcms.spacex.viewmodels.LaunchItemViewModel
 
 fun List<LaunchItemDomain>.toLaunchItemList(resourceProvider: ResourceProvider): List<LaunchItemViewModel> =
     this.map { launchItemDomain ->
