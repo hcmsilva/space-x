@@ -10,8 +10,10 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : ViewModel() {
+class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : ViewModel(),
+    IFilterable {
 
+    private val fullList = mutableListOf<LaunchItemDomain>()
     private val _launchList = MutableLiveData<List<LaunchItemDomain>>()
     val launchList: LiveData<List<LaunchItemDomain>> = _launchList
 
@@ -37,8 +39,8 @@ class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : V
         error?.printStackTrace()
     }
 
-
     private fun processResult(result: List<LaunchItemDomain>) {
+        fullList.addAll(result)
         _launchList.postValue(result)
     }
 
@@ -46,4 +48,26 @@ class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : V
     fun onClear() {
         compositeDisposable.dispose()
     }
+
+    override fun resetFilters() {
+        _launchList.postValue(fullList)
+    }
+
+    override fun filter(year: String, filterSuccess: Boolean, reversed: Boolean) {
+        var filteredList: List<LaunchItemDomain> = fullList.toList()
+
+        if (reversed)
+            filteredList = filteredList.asReversed()
+        if (filterSuccess)
+            filteredList = filteredList.filter { it.launchSuccess == true }
+        if (year.isNotBlank())
+            filteredList = filteredList.filter { it.launchYear == year }
+
+        _launchList.postValue(filteredList)
+    }
+}
+
+interface IFilterable {
+    fun resetFilters()
+    fun filter(year: String, filterSuccess: Boolean, reversed: Boolean)
 }

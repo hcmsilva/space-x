@@ -50,6 +50,7 @@
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
+        android:autofillHints="@string/search_year"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <TextView
@@ -63,7 +64,7 @@
         app:layout_constraintTop_toTopOf="@+id/editTextDate" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch1"
+        android:id="@+id/filter_success_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_only_success"
