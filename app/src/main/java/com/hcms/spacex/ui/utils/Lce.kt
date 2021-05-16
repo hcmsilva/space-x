@@ -1,5 +1,6 @@
 package com.hcms.spacex.ui.utils
 
+//Ended up not having time to refactor
 data class Lce<T> @JvmOverloads constructor(
     val isLoading: Boolean = false,
     val contentData: T? = null,
