@@ -13,7 +13,7 @@ import javax.inject.Inject
 class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : ViewModel(),
     IFilterable {
 
-    private val fullList = mutableListOf<LaunchItemDomain>()
+    internal val fullList = mutableListOf<LaunchItemDomain>()
     private val _launchList = MutableLiveData<List<LaunchItemDomain>>()
     val launchList: LiveData<List<LaunchItemDomain>> = _launchList
 
