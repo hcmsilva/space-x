@@ -2,6 +2,7 @@ package com.hcms.spacex.model
 
 import com.hcms.spacex.R
 import com.hcms.spacex.ui.utils.ResourceProvider
+import java.util.concurrent.TimeUnit
 
 data class LaunchItemViewModel(
     val missionName: String = "",
@@ -33,7 +34,8 @@ data class LaunchItemViewModel(
     private fun getTimeFromUtc() = launchDateUtc?.split("T")?.get(1)?.take(8) ?: "--"
 
     private fun getRckNameType() = "${rocketName}/${rocketType}"
-    private fun getTodayLaunchDiff() = System.currentTimeMillis() - launchDateUnix
+    private fun getTodayLaunchDiff() =
+        TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - (launchDateUnix * 1000))
 
     private fun getDaysSLaunch(): String {
         val daysSFResource = when (upcoming) {

@@ -389,7 +389,7 @@ data class LaunchItemDTO(
 	val ships: List<Any?>? = null,
 
 	@field:SerializedName("launch_date_unix")
-	val launchDateUnix: Int? = null,
+	val launchDateUnix: Long? = null,
 
 	@field:SerializedName("launch_success")
 	val launchSuccess: Boolean? = null,

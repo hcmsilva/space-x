@@ -8,19 +8,19 @@ import com.hcms.spacex.repo.mappers.toDomain
 import com.hcms.spacex.repo.remote.SpaceXService
 import com.hcms.spacex.repo.remote.dto.CompanyInfoDTO
 import com.hcms.spacex.repo.remote.dto.LaunchItemDTO
-import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
-
 
 class Repository @Inject constructor(
     private val apiClient: SpaceXService,
     private val dbClient: DatabaseService,
     private val cacheValidator: CacheValidator
-) : IRepo {
+) : ICompanyInfoRepo, ILaunchesRepo {
+    private val COMPANY_NAME = "SpaceX"
 
-    override fun getCompanyInfo(companyName: String): Flowable<List<CompanyInfoDomain>> {
-        return dbClient.loadCompanyInfo(companyName)
+    override fun getCompanyInfo(): Flowable<List<CompanyInfoDomain>> {
+        return dbClient.loadCompanyInfo(COMPANY_NAME)
             .flatMap { localData ->
                 if (localData.isEmpty() || cacheValidator.cacheIsStale(localData)) {
                     remoteLoadAndCacheCompanyInfo()
@@ -53,16 +53,26 @@ class Repository @Inject constructor(
             .map { item -> item.toDomain() }
             .toFlowable()
 
-    private fun saveDTOLocally(companyInfo: CompanyInfoDTO): Completable =
+    private fun saveDTOLocally(companyInfo: CompanyInfoDTO) {
         dbClient.save(companyInfo.toDomain())
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
 
-    private fun saveDTOLocally(launchItemDTOList: List<LaunchItemDTO>): Completable =
+
+    private fun saveDTOLocally(launchItemDTOList: List<LaunchItemDTO>) {
         dbClient.save(launchItemDTOList.toDomain())
-
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
 
 }
 
-interface IRepo {
-    fun getCompanyInfo(companyName: String): Flowable<List<CompanyInfoDomain>>
+
+interface ICompanyInfoRepo {
+    fun getCompanyInfo(): Flowable<List<CompanyInfoDomain>>
+}
+
+interface ILaunchesRepo {
     fun getAllLaunches(): Flowable<List<LaunchItemDomain>>
 }

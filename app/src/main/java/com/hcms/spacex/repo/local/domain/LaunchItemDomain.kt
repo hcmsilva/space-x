@@ -9,7 +9,7 @@ data class LaunchItemDomain(
     val missionName: String,
     val launchYear: String? = null,
     val launchDateUtc: String? = null,
-    val launchDateUnix: Int? = null,
+    val launchDateUnix: Long? = null,
     val rocketType: String? = null,
     val rocketName: String? = null,
     val launchSuccess: Boolean? = null,
