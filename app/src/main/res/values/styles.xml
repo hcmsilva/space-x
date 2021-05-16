@@ -42,6 +42,7 @@
 
     <style name="spacex_text_item">
         <item name="android:textColor">@color/content_text</item>
+        <item name="android:gravity">start</item>
     </style>
 
 

@@ -69,40 +69,51 @@
         app:layout_constraintGuide_percent="0.45" />
 
     <TextView
-        style="@style/spacex_text_item"
         android:id="@+id/missionNameTextView"
-        android:layout_width="wrap_content"
+        style="@style/spacex_text_item"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="@+id/mission_patch_iv"
         tools:text="@string/mission_name" />
 
     <TextView
-        style="@style/spacex_text_item"
         android:id="@+id/dateAtTimeTextView"
-        android:layout_width="wrap_content"
+        style="@style/spacex_text_item"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/missionNameTextView"
         tools:text="@string/date_at_time" />
 
     <TextView
-        style="@style/spacex_text_item"
         android:id="@+id/nameTypeTextView"
-        android:layout_width="wrap_content"
+        style="@style/spacex_text_item"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/dateAtTimeTextView"
         tools:text="@string/name_type" />
 
     <TextView
-        style="@style/spacex_text_item"
         android:id="@+id/todayMinusLaunchDateTextView"
-        android:layout_width="wrap_content"
+        style="@style/spacex_text_item"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/nameTypeTextView"
         tools:text="@string/today_minus_launch_date" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
