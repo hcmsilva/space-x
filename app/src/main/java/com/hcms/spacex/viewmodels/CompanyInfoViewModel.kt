@@ -16,7 +16,7 @@ class CompanyInfoViewModel @Inject constructor(
     private val repo: ICompanyInfoRepo,
     private val resourceProvider: ResourceProvider
 ) : ViewModel() {
-    private val _companyInfo = MutableLiveData<String>()
+    private val _companyInfo = MutableLiveData<String>("")
     val companyInfo: LiveData<String> = _companyInfo
 
     private val compositeDisposable = CompositeDisposable()
@@ -31,7 +31,7 @@ class CompanyInfoViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { result -> processResult(result) },
+                    { success -> processSuccess(success) },
                     { error -> processError(error) }
                 )
         )
@@ -42,7 +42,7 @@ class CompanyInfoViewModel @Inject constructor(
     }
 
 
-    private fun processResult(result: List<CompanyInfoDomain>) {
+    private fun processSuccess(result: List<CompanyInfoDomain>) {
         _companyInfo.postValue(result.first().toCompanyInfoString())
     }
 

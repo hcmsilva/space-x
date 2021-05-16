@@ -9,7 +9,7 @@ import com.hcms.spacex.repo.remote.dto.Rocket
 import io.mockk.every
 import io.mockk.mockk
 
-object RepoTestHelper {
+object TestHelper {
 
     fun commonSetupMockCompanyInfoDTO(downloadedCompanyInfo: CompanyInfoDTO) {
         every { downloadedCompanyInfo.summary } returns "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets."

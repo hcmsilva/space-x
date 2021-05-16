@@ -17,7 +17,7 @@ class Repository @Inject constructor(
     private val dbClient: DatabaseService,
     private val cacheValidator: CacheValidator
 ) : ICompanyInfoRepo, ILaunchesRepo {
-    private val COMPANY_NAME = "SpaceX"
+    val COMPANY_NAME = "SpaceX"
 
     override fun getCompanyInfo(): Flowable<List<CompanyInfoDomain>> {
         return dbClient.loadCompanyInfo(COMPANY_NAME)

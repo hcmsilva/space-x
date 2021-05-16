@@ -21,6 +21,7 @@ class RepositoryTest {
     private lateinit var apiClient: SpaceXService
     private lateinit var dbClient: DatabaseService
     private lateinit var cacheValidator: CacheValidator
+    private lateinit var companyName: String
 
     private lateinit var subject: Repository
 
@@ -38,11 +39,12 @@ class RepositoryTest {
             dbClient = dbClient,
             cacheValidator = cacheValidator
         )
+        companyName = subject.COMPANY_NAME
     }
 
     @Test
     fun `Given previously cached companyInfo When repo getCompanyInfo invoked Then web service NOT invoked And db service save NOT invoked`() {
-        val companyName = "Android Ltd."
+
         val cachedCompanyInfo: CompanyInfoDomain = mockk()
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(
@@ -51,7 +53,7 @@ class RepositoryTest {
             )
         )
 
-        subject.getCompanyInfo(companyName)
+        subject.getCompanyInfo()
             .test()
             .assertValueCount(1)
 
@@ -61,7 +63,7 @@ class RepositoryTest {
 
     @Test
     fun `Given previously cached companyInfo When repo getCompanyInfo invoked Then cached data returned into flowable stream`() {
-        val companyName = "Android Ltd."
+
         val cachedCompanyInfo: CompanyInfoDomain = mockk()
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(
@@ -70,22 +72,22 @@ class RepositoryTest {
             )
         )
 
-        subject.getCompanyInfo(companyName)
+        subject.getCompanyInfo()
             .test()
             .assertValue { it.contains(cachedCompanyInfo) }
     }
 
     @Test
     fun `Given NO previously cached companyInfo When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
-        val companyName = "Android Ltd."
+
         val downloadedCompanyInfo: CompanyInfoDTO = mockk()
-        RepoTestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
+        TestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(emptyList())
         every { apiClient.getCompanyInfo() } returns Single.just(downloadedCompanyInfo)
         every { dbClient.save(any<CompanyInfoDomain>()) } returns Completable.complete()
 
-        subject.getCompanyInfo(companyName)
+        subject.getCompanyInfo()
             .test()
 
         verify { apiClient.getCompanyInfo() }
@@ -94,17 +96,17 @@ class RepositoryTest {
 
     @Test
     fun `Given NO previously cached companyInfo When repo getCompanyInfo invoked Then web service invoked company info returned into stream And cache updated`() {
-        val companyName = "Android Ltd."
+
         val downloadedCompanyInfo: CompanyInfoDTO = mockk()
-        RepoTestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
+        TestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
         val expectedResult: CompanyInfoDomain = mockk()
-        RepoTestHelper.commonSetupMockCompanyInfoDomain(expectedResult)
+        TestHelper.commonSetupMockCompanyInfoDomain(expectedResult)
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(emptyList())
         every { apiClient.getCompanyInfo() } returns Single.just(downloadedCompanyInfo)
         every { dbClient.save(any<CompanyInfoDomain>()) } returns Completable.complete()
 
-        subject.getCompanyInfo(companyName)
+        subject.getCompanyInfo()
             .test()
             .assertValue {
                 it.any { info ->
@@ -120,7 +122,7 @@ class RepositoryTest {
 
     @Test
     fun `Given stale cached companyInfo When repo getCompanyInfo invoked Then web service invoked And db service save invoked for caching`() {
-        val companyName = "Android Ltd."
+
         val cachedCompanyInfo: CompanyInfoDomain = mockk()
 
         every { dbClient.loadCompanyInfo(companyName) } returns Flowable.just(
@@ -129,12 +131,12 @@ class RepositoryTest {
             )
         )
         val downloadedCompanyInfo: CompanyInfoDTO = mockk()
-        RepoTestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
+        TestHelper.commonSetupMockCompanyInfoDTO(downloadedCompanyInfo)
         every { cacheValidator.cacheIsStale(listOf(cachedCompanyInfo)) } returns true
         every { apiClient.getCompanyInfo() } returns Single.just(downloadedCompanyInfo)
         every { dbClient.save(any<CompanyInfoDomain>()) } returns Completable.complete()
 
-        subject.getCompanyInfo(companyName)
+        subject.getCompanyInfo()
             .test()
 
         verify { apiClient.getCompanyInfo() }
@@ -176,7 +178,7 @@ class RepositoryTest {
     @Test
     fun `Given NO previously cached launchItems When repo getAllLaunches invoked Then web service invoked And db service save invoked for caching`() {
         val downloadedLaunchItem: LaunchItemDTO = mockk()
-        RepoTestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
+        TestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
 
         every { dbClient.loadAllLaunches() } returns Flowable.just(emptyList())
         every { apiClient.getAllLaunches() } returns Single.just(listOf(downloadedLaunchItem))
@@ -193,9 +195,9 @@ class RepositoryTest {
     @Test
     fun `Given NO previously cached launchItems When repo getAllLaunches invoked Then web service invoked company info returned into stream`() {
         val downloadedLaunchItem: LaunchItemDTO = mockk()
-        RepoTestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
+        TestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
         val expectedResult: LaunchItemDomain = mockk()
-        RepoTestHelper.commonSetupMockLaunchItemDomain(expectedResult)
+        TestHelper.commonSetupMockLaunchItemDomain(expectedResult)
 
         every { dbClient.loadAllLaunches() } returns Flowable.just(emptyList())
         every { apiClient.getAllLaunches() } returns Single.just(listOf(downloadedLaunchItem))
@@ -224,7 +226,7 @@ class RepositoryTest {
         val cachedLaunchItem1: LaunchItemDomain = mockk()
         val cachedList = listOf(cachedLaunchItem1)
         val downloadedLaunchItem: LaunchItemDTO = mockk()
-        RepoTestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
+        TestHelper.commonSetupMockLaunchItemDTO(downloadedLaunchItem)
         every { dbClient.loadAllLaunches() } returns Flowable.just(cachedList)
         every { cacheValidator.cacheIsStale(cachedList) } returns true
         every { apiClient.getAllLaunches() } returns Single.just(listOf(downloadedLaunchItem))
