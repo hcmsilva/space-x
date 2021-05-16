@@ -24,10 +24,12 @@ class LaunchesAdapter(context: Context) : RecyclerView.Adapter<LaunchViewHolder>
         holder.bind(data[position])
 
     fun updateList(launches: List<LaunchItemViewModel>) {
-        val diffResult = DiffUtil.calculateDiff(LaunchesDiffCallback(data, launches))
+        //TODO: Debug flickr issue using diff utils
+//        val diffResult = DiffUtil.calculateDiff(LaunchesDiffCallback(data, launches))
+//        diffResult.dispatchUpdatesTo(this)
         data.clear()
         data.addAll(launches)
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     class LaunchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
