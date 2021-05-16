@@ -3,6 +3,7 @@
     <string name="company">Company</string>
     <string name="launches">Launches</string>
     <string name="company_info_placeholder">{companyName} was founded by {founderName} in {year}. It has now {employees} employees, {launch_sites} launch sites, and is valued at USD {valuation}</string>
+    <string name="company_info_template">%1$s was founded by %2$s in %3$d. It has now %4$d employees, %5$d launch sites, and is valued at USD %6$s</string>
     <string name="mission">Mission:</string>
     <string name="date_time">Date/time:</string>
     <string name="rocket">Rocket:</string>
@@ -11,4 +12,8 @@
     <string name="date_at_time">{date} at {time}</string>
     <string name="name_type">{name} / {type}</string>
     <string name="today_minus_launch_date">{today - launch date}</string>
+    <string name="fromDays">from</string>
+    <string name="sinceDays">since</string>
+    <string name="daysSinceFromLaunch">Days %1$s now:</string>
+    <string name="dateAtTime">%1$s at %2$s</string>
 </resources>

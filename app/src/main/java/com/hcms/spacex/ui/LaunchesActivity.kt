@@ -1,40 +1,46 @@
 package com.hcms.spacex.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hcms.spacex.R
-import com.hcms.spacex.repo.IRepo
+import com.hcms.spacex.model.CompanyInfoViewModel
+import com.hcms.spacex.model.LaunchesViewModel
+import com.hcms.spacex.ui.adapters.LaunchesAdapter
+import com.hcms.spacex.ui.mappers.toLaunchItemList
+import com.hcms.spacex.ui.utils.ResourceProvider
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_launches.*
 
 @AndroidEntryPoint
 class LaunchesActivity : AppCompatActivity() {
-    private val companyViewModel: CompanyViewModel by viewModels()
+    private val companyInfoViewModel: CompanyInfoViewModel by viewModels()
     private val launchesViewModel: LaunchesViewModel by viewModels()
+    private lateinit var launchesAdapter: LaunchesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launches)
 
-        checkVM()
+        launches_list.layoutManager = LinearLayoutManager(this)
+        launchesAdapter = LaunchesAdapter(this)
+        launches_list.adapter = launchesAdapter
+
+        companyInfoViewModel.companyInfo.observe(
+            this,
+            Observer { companyInfo -> company_info.text = companyInfo })
+
+        launchesViewModel.launchList.observe(
+            this, Observer { newLaunchData ->
+                launchesAdapter.updateList(
+                    newLaunchData.toLaunchItemList(
+                        ResourceProvider(applicationContext)
+                    )
+                )
+            }
+        )
     }
-
-    private fun checkVM() {
-        Log.d("activity", "ViewModel HashCode? ${companyViewModel.hashCode()}")
-        Log.d("activity", "ViewModel HashCode? ${launchesViewModel.hashCode()}")
-    }
 }
 
-@HiltViewModel
-class LaunchesViewModel @Inject constructor(val repo: IRepo) : ViewModel() {
-
-}
-
-@HiltViewModel
-class CompanyViewModel @Inject constructor(val repo: IRepo) : ViewModel() {
-
-}

@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="@+id/mission_patch_iv" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/missionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,6 +34,7 @@
         app:layout_constraintTop_toTopOf="@+id/mission_patch_iv" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/dateTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/missionTextView" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/rocketTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,6 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dateTimeTextView" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/daysSinceFromTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,6 +69,7 @@
         app:layout_constraintGuide_percent="0.45" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/missionNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,6 +78,7 @@
         tools:text="@string/mission_name" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/dateAtTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,6 +87,7 @@
         tools:text="@string/date_at_time" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/nameTypeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,6 +96,7 @@
         tools:text="@string/name_type" />
 
     <TextView
+        style="@style/spacex_text_item"
         android:id="@+id/todayMinusLaunchDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

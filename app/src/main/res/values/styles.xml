@@ -23,8 +23,12 @@
     <style name="spacex_text_body">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingStart">2dp</item>
+        <item name="android:paddingStart">5dp</item>
         <item name="android:paddingEnd">2dp</item>
+        <item name="android:textColor">@color/content_text</item>
+    </style>
+
+    <style name="spacex_text_item">
         <item name="android:textColor">@color/content_text</item>
     </style>
 
