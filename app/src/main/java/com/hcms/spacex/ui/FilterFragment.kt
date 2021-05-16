@@ -34,8 +34,7 @@ class FilterFragment @Inject constructor() : BottomSheetDialogFragment() {
 
     private fun setFilterClickListeners(view: View) {
         view.clear.setOnClickListener {
-            view.filter_success_switch.isEnabled = false
-            filterable.resetFilters()
+            clearFilters(view)
             dismiss()
         }
 
@@ -48,11 +47,18 @@ class FilterFragment @Inject constructor() : BottomSheetDialogFragment() {
         }
     }
 
+    private fun clearFilters(view: View) {
+        view.filter_reversed_switch.isChecked = false
+        view.filter_success_switch.isChecked = false
+        view.editTextDate.text.clear()
+        filterable.resetFilters()
+    }
+
     private fun filterResults() {
         filterable.filter(
             year = editTextDate.text.toString(),
-            filterSuccess = filter_success_switch.isEnabled,
-            reversed = false
+            filterSuccess = filter_success_switch.isChecked,
+            reversed = filter_reversed_switch.isChecked
         )
     }
 

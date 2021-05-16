@@ -22,4 +22,6 @@
     <string name="show_only_success">Show only Success</string>
     <string name="clear_filter">clear filters</string>
     <string name="search_year">search year</string>
+    <string name="default_is_asc">default sort: ASC</string>
+    <string name="sort_by_desc">Sort by DESC</string>
 </resources>

@@ -46,11 +46,11 @@
         android:id="@+id/editTextDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints="@string/search_year"
         android:ems="10"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
-        android:autofillHints="@string/search_year"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <TextView
@@ -63,6 +63,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextDate" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="@string/default_is_asc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/filter_success_switch"
         android:layout_width="wrap_content"
@@ -70,6 +79,14 @@
         android:text="@string/show_only_success"
         app:layout_constraintStart_toStartOf="@+id/editTextDate"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/filter_reversed_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sort_by_desc"
+        app:layout_constraintEnd_toEndOf="@+id/filter_success_switch"
+        app:layout_constraintTop_toBottomOf="@+id/filter_success_switch" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
@@ -83,5 +100,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.35" />
 </androidx.constraintlayout.widget.ConstraintLayout>

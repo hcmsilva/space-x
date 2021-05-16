@@ -34,20 +34,14 @@ q
 Aapp/src/main/java/com/hcms/spacex/repo/local/dao/LaunchItemDAO.kt,e\e\ee25f5a05f9bd9fb19e92c0ba896aefaa31ff97d
 s
 Capp/src/main/java/com/hcms/spacex/repo/local/CompanyInfoDatabase.kt,1\b\1b47204f3bf035b4aa2e172fd8e4563170f395d0
-o
-?app/src/main/java/com/hcms/spacex/repo/local/DatabaseService.kt,e\7\e71d9cc7421b78c53e7542fd772543d4a94cade3
 p
 @app/src/main/java/com/hcms/spacex/repo/local/LaunchesDatabase.kt,0\a\0ae914f227ff3ae272587a85b29594780287292e
 n
 >app/src/main/java/com/hcms/spacex/ui/utils/ResourceProvider.kt,f\6\f6e2f585d4d8c0daab433ff0baedb2979ac57d79
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 r
 Bapp/src/main/java/com/hcms/spacex/repo/local/dao/TimestampedDAO.kt,a\d\ad1fc9badf639d841399d5c76cd1616153c1a836
 ^
 .app/src/main/java/com/hcms/spacex/AppModule.kt,3\a\3a4798a7d59006278f9101f7b13cb79be11079c7
-c
-3app/src/main/java/com/hcms/spacex/ui/di/UiModule.kt,1\7\17f4f0397b88cc58270ce7aeb08038578fc9e354
 g
 7app/src/main/java/com/hcms/spacex/repo/di/RepoModule.kt,2\3\23d820687cedd779342c5ea64fc595020fa2a64d
 w

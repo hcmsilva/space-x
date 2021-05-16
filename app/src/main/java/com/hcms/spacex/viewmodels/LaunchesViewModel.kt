@@ -40,8 +40,10 @@ class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : V
     }
 
     private fun processResult(result: List<LaunchItemDomain>) {
-        fullList.addAll(result)
-        _launchList.postValue(result)
+        val tmpList = result.sortedBy { it.launchYear }
+        fullList.clear()
+        fullList.addAll(tmpList)
+        _launchList.postValue(fullList)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
