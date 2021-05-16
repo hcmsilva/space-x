@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hcms.spacex.R
 import com.hcms.spacex.ui.adapters.LaunchesAdapter.LaunchViewHolder
 import com.hcms.spacex.viewmodels.LaunchItemViewModel
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.android.synthetic.main.launch_item_row.view.*
+import javax.inject.Inject
 
-class LaunchesAdapter(context: Context) : RecyclerView.Adapter<LaunchViewHolder>() {
+class LaunchesAdapter @Inject constructor(@ActivityContext context: Context) :
+    RecyclerView.Adapter<LaunchViewHolder>() {
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private val data: MutableList<LaunchItemViewModel> = mutableListOf()
 

@@ -13,21 +13,34 @@ import com.hcms.spacex.viewmodels.LaunchesViewModel
 import com.hcms.spacex.viewmodels.mappers.toLaunchItemList
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_launches.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LaunchesActivity : AppCompatActivity() {
     private val companyInfoViewModel: CompanyInfoViewModel by viewModels()
     private val launchesViewModel: LaunchesViewModel by viewModels()
-    private lateinit var launchesAdapter: LaunchesAdapter
+
+    @Inject
+    lateinit var launchesAdapter: LaunchesAdapter
+
+    @Inject
+    lateinit var filterFragment: FilterFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launches)
 
         launches_list.layoutManager = LinearLayoutManager(this)
-        launchesAdapter = LaunchesAdapter(this)
         launches_list.adapter = launchesAdapter
 
+        observeViewModels()
+
+        filter_button.setOnClickListener {
+            filterFragment.show(supportFragmentManager, "filterfragment")
+        }
+    }
+
+    private fun observeViewModels() {
         companyInfoViewModel.companyInfo.observe(
             this,
             Observer { companyInfo -> company_info.text = companyInfo })

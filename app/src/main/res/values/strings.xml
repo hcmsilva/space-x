@@ -16,4 +16,9 @@
     <string name="sinceDays">since</string>
     <string name="daysSinceFromLaunch">Days %1$s now:</string>
     <string name="dateAtTime">%1$s at %2$s</string>
+    <string name="by_launch_year">by launch year</string>
+    <string name="by_success_launch">by launch success</string>
+    <string name="filter">Filter:</string>
+    <string name="show_only_success">Show only Success</string>
+    <string name="clear_filter">clear filters</string>
 </resources>
