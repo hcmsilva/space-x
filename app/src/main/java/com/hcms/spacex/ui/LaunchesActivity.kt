@@ -47,7 +47,7 @@ class LaunchesActivity : AppCompatActivity() {
 
         launchesViewModel.launchList.observe(
             this, Observer { newLaunchData ->
-                launchesAdapter.updateList(
+                launchesAdapter.renewList(
                     newLaunchData.toLaunchItemList(
                         ResourceProvider(applicationContext)
                     )

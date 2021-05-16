@@ -2,15 +2,12 @@ package com.hcms.spacex.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hcms.spacex.R
-import com.hcms.spacex.ui.adapters.LaunchesAdapter.LaunchViewHolder
+import com.hcms.spacex.ui.adapters.adapterutils.LaunchViewHolder
 import com.hcms.spacex.viewmodels.LaunchItemViewModel
 import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.android.synthetic.main.launch_item_row.view.*
 import javax.inject.Inject
 
 class LaunchesAdapter @Inject constructor(@ActivityContext context: Context) :
@@ -26,41 +23,9 @@ class LaunchesAdapter @Inject constructor(@ActivityContext context: Context) :
     override fun onBindViewHolder(holder: LaunchViewHolder, position: Int) =
         holder.bind(data[position])
 
-    fun updateList(launches: List<LaunchItemViewModel>) {
-        //TODO: Debug flickr issue using diff utils
-//        val diffResult = DiffUtil.calculateDiff(LaunchesDiffCallback(data, launches))
-//        diffResult.dispatchUpdatesTo(this)
+    fun renewList(launches: List<LaunchItemViewModel>) {
         data.clear()
         data.addAll(launches)
         notifyDataSetChanged()
     }
-
-    class LaunchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(model: LaunchItemViewModel) {
-            itemView.missionNameTextView.text = model.missionName
-            itemView.dateAtTimeTextView.text = model.dayAtTime
-            itemView.nameTypeTextView.text = model.rocketNameType
-            itemView.daysSinceFromTextView.text = model.daysSinceFromLaunch
-            itemView.todayMinusLaunchDateTextView.text = model.todayMinusLaunchDateInDays
-        }
-    }
-
-    class LaunchesDiffCallback(
-        private val oldLaunches: List<LaunchItemViewModel>,
-        private val newLaunches: List<LaunchItemViewModel>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int =
-            oldLaunches.size
-
-        override fun getNewListSize(): Int =
-            newLaunches.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldLaunches[oldItemPosition] == newLaunches[newItemPosition]
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldLaunches[oldItemPosition].isVisualRepresentationTheSame(newLaunches[newItemPosition])
-
-    }
-
 }
