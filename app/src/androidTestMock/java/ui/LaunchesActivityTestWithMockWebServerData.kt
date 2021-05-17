@@ -59,6 +59,8 @@ class LaunchesActivityTestWithMockWebServerData {
                 .register(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
             IdlingRegistry.getInstance()
                 .register(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
+            IdlingRegistry.getInstance()
+                .register(CountingIdlingResourceSingleton.countingIdlingResFilterFrag)
 
             localWebServer = MockWebServer()
             localWebServer.dispatcher = dispatcher
@@ -72,6 +74,8 @@ class LaunchesActivityTestWithMockWebServerData {
                 .unregister(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
             IdlingRegistry.getInstance()
                 .unregister(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
+            IdlingRegistry.getInstance()
+                .unregister(CountingIdlingResourceSingleton.countingIdlingResFilterFrag)
 
             localWebServer.shutdown()
         }
