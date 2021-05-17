@@ -6,11 +6,16 @@ object CountingIdlingResourceSingleton {
 
     private const val RESOURCE_COMPANY_INFO = "RESOURCE_COMPANY_INFO"
     private const val RESOURCE_ALL_LAUNCHES = "RESOURCE_ALL_LAUNCHES"
+    private const val RESOURCE_FILTER = "RESOURCE_FILTER"
 
     @JvmField
     val countingIdlingResCompanyInfo = CountingIdlingResource(RESOURCE_COMPANY_INFO)
+
     @JvmField
     val countingIdlingResAllLaunches = CountingIdlingResource(RESOURCE_ALL_LAUNCHES)
+
+    @JvmField
+    val countingIdlingResFilterFrag = CountingIdlingResource(RESOURCE_FILTER)
 
     fun incrementCompanyInfo() {
         countingIdlingResCompanyInfo.increment()
@@ -29,6 +34,16 @@ object CountingIdlingResourceSingleton {
     fun decrementAllLaunches() {
         if (!countingIdlingResAllLaunches.isIdleNow) {
             countingIdlingResAllLaunches.decrement()
+        }
+    }
+
+    fun incrementFilterFrag() {
+        countingIdlingResFilterFrag.increment()
+    }
+
+    fun decrementFilterFrag() {
+        if (!countingIdlingResFilterFrag.isIdleNow) {
+            countingIdlingResFilterFrag.decrement()
         }
     }
 }
