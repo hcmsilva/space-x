@@ -9,7 +9,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.hcms.spacex.R
 import com.hcms.spacex.SpaceXApplication
 import com.hcms.spacex.repo.MockFileReader
 import com.hcms.spacex.ui.utils.CountingIdlingResourceSingleton
@@ -116,11 +115,6 @@ class LaunchesActivityTestWithLaunchesApiFailures {
         //launches divider
         onView(launchesDividerMatcher())
             .check(matches(isDisplayed()))
-
-
-        //content list
-        onView(withId(R.id.launches_list))
-            .check(matches(hasChildCount(0)))
 
     }
 
