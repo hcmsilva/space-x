@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.hcms.spacex.R
 import com.hcms.spacex.repo.ICompanyInfoRepo
 import com.hcms.spacex.repo.local.domain.CompanyInfoDomain
+import com.hcms.spacex.ui.utils.CountingIdlingResourceSingleton
 import com.hcms.spacex.ui.utils.ResourceProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,6 +27,7 @@ class CompanyInfoViewModel @Inject constructor(
     }
 
     internal fun loadCompanyData() {
+        CountingIdlingResourceSingleton.incrementCompanyInfo()
         compositeDisposable.addAll(
             repo.getCompanyInfo()
                 .subscribeOn(Schedulers.io())
@@ -39,11 +41,13 @@ class CompanyInfoViewModel @Inject constructor(
 
     private fun processError(error: Throwable?) {
         error?.printStackTrace()
+        CountingIdlingResourceSingleton.decrementCompanyInfo()
     }
 
 
     private fun processSuccess(result: List<CompanyInfoDomain>) {
         _companyInfo.postValue(result.first().toCompanyInfoString())
+        CountingIdlingResourceSingleton.decrementCompanyInfo()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

@@ -107,7 +107,7 @@ class SpaceXServiceTest {
         val expectedFirstMissionName = "FalconSat"
         val expectedLaunchYear = "2006"
         val expectedLaunchDateUtc = "2006-03-24T22:30:00.000Z"
-        val expectedLaunchDateUnix = 1143239400
+        val expectedLaunchDateUnix = 1143239400L
         val expectedRocketType = "Merlin A"
         val expectedRocketName = "Falcon 1"
         val expectedLaunchSuccess = false

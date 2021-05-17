@@ -3,6 +3,7 @@ package com.hcms.spacex.viewmodels
 import androidx.lifecycle.*
 import com.hcms.spacex.repo.ILaunchesRepo
 import com.hcms.spacex.repo.local.domain.LaunchItemDomain
+import com.hcms.spacex.ui.utils.CountingIdlingResourceSingleton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,6 +25,7 @@ class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : V
     }
 
     internal fun loadLaunchesData() {
+        CountingIdlingResourceSingleton.incrementAllLaunches()
         compositeDisposable.addAll(
             repo.getAllLaunches()
                 .subscribeOn(Schedulers.io())
@@ -37,6 +39,7 @@ class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : V
 
     private fun processError(error: Throwable?) {
         error?.printStackTrace()
+        CountingIdlingResourceSingleton.countingIdlingResAllLaunches.decrement()
     }
 
     private fun processResult(result: List<LaunchItemDomain>) {
@@ -44,6 +47,7 @@ class LaunchesViewModel @Inject constructor(private val repo: ILaunchesRepo) : V
         fullList.clear()
         fullList.addAll(tmpList)
         _launchList.postValue(fullList)
+        CountingIdlingResourceSingleton.decrementAllLaunches()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

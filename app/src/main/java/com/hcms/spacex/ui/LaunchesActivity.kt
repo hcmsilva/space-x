@@ -16,15 +16,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_launches.*
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class LaunchesActivity : AppCompatActivity() {
     private val companyInfoViewModel: CompanyInfoViewModel by viewModels()
     private val launchesViewModel: LaunchesViewModel by viewModels()
 
     private val companyInfoObserver =
-        Observer<String> { companyInfo -> company_info.text = companyInfo }
+        Observer<String> { companyInfo ->
+            company_info.text = companyInfo
+        }
     private val launchesObserver =
-        Observer<List<LaunchItemDomain>> { launchesAdapter.renewList(it.toLaunchItemList(resProvider)) }
+        Observer<List<LaunchItemDomain>> {
+            launchesAdapter.renewList(it.toLaunchItemList(resProvider))
+        }
 
     @Inject
     lateinit var launchesAdapter: LaunchesAdapter

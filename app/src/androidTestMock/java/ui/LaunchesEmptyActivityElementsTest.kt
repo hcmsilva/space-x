@@ -2,24 +2,45 @@ package com.hcms.spacex.ui
 
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.hcms.spacex.R
+import com.hcms.spacex.ui.utils.CountingIdlingResourceSingleton
 import org.hamcrest.Matchers.allOf
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @LargeTest
-@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4ClassRunner::class)
 class LaunchesEmptyActivityElementsTest {
 
-    @Rule
-    @JvmField
-    var mActivityTestRule = ActivityTestRule(LaunchesActivity::class.java)
+    @get:Rule
+    var activityRule: ActivityScenarioRule<LaunchesActivity> =
+        ActivityScenarioRule(LaunchesActivity::class.java)
+
+    //todo this one doesn't have network reqs
+    @Before
+    fun registerIdlingResource() {
+        IdlingRegistry.getInstance()
+            .register(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
+        IdlingRegistry.getInstance()
+            .register(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
+    }
+
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance()
+            .unregister(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
+        IdlingRegistry.getInstance()
+            .unregister(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
+    }
 
     @Test
     fun launchesEmptyActivityElementsTest() {
