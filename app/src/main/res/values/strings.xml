@@ -24,4 +24,7 @@
     <string name="search_year">search year</string>
     <string name="default_is_asc">default sort: ASC</string>
     <string name="sort_by_desc">Sort by DESC</string>
+    <string name="external_links">External Links</string>
+    <string name="video">video</string>
+    <string name="wiki">wikipedia</string>
 </resources>

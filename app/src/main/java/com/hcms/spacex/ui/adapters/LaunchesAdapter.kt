@@ -10,7 +10,10 @@ import com.hcms.spacex.viewmodels.LaunchItemViewModel
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
-class LaunchesAdapter @Inject constructor(@ActivityContext context: Context) :
+class LaunchesAdapter @Inject constructor(
+    @ActivityContext context: Context,
+    private val customClickListener: OnLaunchItemClickListener
+) :
     RecyclerView.Adapter<LaunchViewHolder>() {
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private val data: MutableList<LaunchItemViewModel> = mutableListOf()
@@ -21,11 +24,15 @@ class LaunchesAdapter @Inject constructor(@ActivityContext context: Context) :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: LaunchViewHolder, position: Int) =
-        holder.bind(data[position])
+        holder.bind(data[position], customClickListener)
 
     fun renewList(launches: List<LaunchItemViewModel>) {
         data.clear()
         data.addAll(launches)
         notifyDataSetChanged()
+    }
+
+    interface OnLaunchItemClickListener {
+        fun onItemClick(item: LaunchItemViewModel)
     }
 }

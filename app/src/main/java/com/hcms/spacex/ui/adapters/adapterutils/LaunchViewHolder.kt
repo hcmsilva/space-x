@@ -2,12 +2,16 @@ package com.hcms.spacex.ui.adapters.adapterutils
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.hcms.spacex.ui.adapters.LaunchesAdapter
 import com.hcms.spacex.viewmodels.LaunchItemViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.launch_item_row.view.*
 
 class LaunchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(model: LaunchItemViewModel) {
+    fun bind(
+        model: LaunchItemViewModel,
+        customClickListener: LaunchesAdapter.OnLaunchItemClickListener
+    ) {
         itemView.missionNameTextView.text = model.missionName
         itemView.dateAtTimeTextView.text = model.dayAtTime
         itemView.nameTypeTextView.text = model.rocketNameType
@@ -17,6 +21,7 @@ class LaunchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Picasso.get().load(getSuccessResId(model)).into(itemView.success_iv)
         itemView.success_iv.tag = model.launchSuccess
         itemView.mission_patch_iv.tag = model.missionPatchSmall
+        itemView.setOnClickListener { customClickListener.onItemClick(model) }
     }
 
     private fun getSuccessResId(model: LaunchItemViewModel): Int {
@@ -25,5 +30,4 @@ class LaunchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } else
             android.R.drawable.checkbox_off_background
     }
-
 }

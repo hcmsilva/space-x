@@ -33,10 +33,8 @@ class LaunchesActivity : AppCompatActivity() {
 
     @Inject
     lateinit var launchesAdapter: LaunchesAdapter
-
     @Inject
     lateinit var filterFragment: FilterFragment
-
     @Inject
     lateinit var resProvider: ResourceProvider
 
