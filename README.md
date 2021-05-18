@@ -26,3 +26,10 @@ Architecture description and common patterns in use:
 - RxJava was the choice for async operations
 - MockK was the mocking library of choice
 - all of the challenge requirements are implemented
+
+
+<img width="274" alt="spacex01" src="https://user-images.githubusercontent.com/4844875/118580736-4d955680-b788-11eb-96f5-2c3c0b9e6e3c.PNG">
+
+<img width="274" alt="spacex03" src="https://user-images.githubusercontent.com/4844875/118580773-6140bd00-b788-11eb-88a1-5843cf2b7369.PNG">
+
+<img width="274" alt="spacex04" src="https://user-images.githubusercontent.com/4844875/118580778-63a31700-b788-11eb-90c7-809725a8f29a.PNG">
