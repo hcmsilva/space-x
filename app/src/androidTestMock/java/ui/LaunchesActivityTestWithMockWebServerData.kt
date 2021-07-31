@@ -9,16 +9,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.hcms.spacex.repo.MockFileReader
 import com.hcms.spacex.ui.utils.CountingIdlingResourceSingleton
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import utils.*
 
@@ -33,55 +25,41 @@ class LaunchesActivityTestWithMockWebServerData {
 
 
     companion object {
-        lateinit var localWebServer: MockWebServer
+
+        @ClassRule
+        @JvmField
+        val mockWebServerRule = MockWebServerWithAllDataRule()
 
         @JvmStatic
         @BeforeClass
         fun serverSetup() {
-            //mock server dispatcher setup for this feature
-            val dispatcher: Dispatcher = object : Dispatcher() {
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    val companyInfoRecordedResponse =
-                        MockFileReader("/company_info_mock_response.json").content
-                    val allLaunchesRecordedResponse =
-                        MockFileReader("/all_launches_mock_response.json").content
-                    when (request.path) {
-                        "/v3/info" -> return MockResponse().setBody(companyInfoRecordedResponse)
-                            .setResponseCode(200)
-                        "/v3/launches" -> return MockResponse().setBody(allLaunchesRecordedResponse)
-                            .setResponseCode(200)
+            idlingRegistrySetup()
+        }
 
-                    }
-                    return MockResponse().setResponseCode(404)
-                }
-            }
+        private fun idlingRegistrySetup() {
             IdlingRegistry.getInstance()
                 .register(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
             IdlingRegistry.getInstance()
                 .register(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
             IdlingRegistry.getInstance()
                 .register(CountingIdlingResourceSingleton.countingIdlingResFilterFrag)
-
-            localWebServer = MockWebServer()
-            localWebServer.dispatcher = dispatcher
-            localWebServer.start(8080)
         }
 
         @JvmStatic
         @AfterClass
         fun serverTeardown() {
+            idlingRegistryTearDown()
+        }
+
+        private fun idlingRegistryTearDown() {
             IdlingRegistry.getInstance()
                 .unregister(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
             IdlingRegistry.getInstance()
                 .unregister(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
             IdlingRegistry.getInstance()
                 .unregister(CountingIdlingResourceSingleton.countingIdlingResFilterFrag)
-
-            localWebServer.shutdown()
         }
     }
-
-    private val empty = ""
 
 
     @Test
@@ -134,6 +112,13 @@ class LaunchesActivityTestWithMockWebServerData {
         recyclerItemViewMatcher(0, rocketNameTypeContentMatcher())
 
     }
+
+//    @Test
+//    fun given_dataLoaded_ThenUserClicksNItem() {
+//        onView(withId(R.id.launches_list))
+//            .perform(RecyclerViewActions.scrollToPosition<LaunchViewHolder>(5))
+//            .perform(RecyclerViewActions.)
+//    }
 
 
     @Test
