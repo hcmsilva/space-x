@@ -73,10 +73,10 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0-rc02'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation "androidx.fragment:fragment-ktx:1.3.3"
+    implementation 'androidx.core:core-ktx:1.7.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Network + Rx
@@ -90,19 +90,20 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    androidTestImplementation 'androidx.test:rules:1.4.0-alpha06'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.11.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
-    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.4.0'
 
     testMockImplementation 'com.squareup.okhttp3:mockwebserver:4.9.1'
     mockImplementation 'com.squareup.okhttp3:mockwebserver:4.9.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation "io.mockk:mockk:1.11.0"
     androidTestImplementation 'org.awaitility:awaitility-kotlin:4.1.0'
@@ -124,4 +125,10 @@ dependencies {
 
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
+}
+
+allprojects {
+    configurations.all {
+        resolutionStrategy.force 'org.objenesis:objenesis:2.6'
+    }
 }
