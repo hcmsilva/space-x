@@ -2,15 +2,17 @@ package com.hcms.spacex.ui
 
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.idling.CountingIdlingResource
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.hcms.spacex.ui.utils.CountingIdlingResourceSingleton
-import org.junit.*
+import org.junit.ClassRule
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import utils.*
 
@@ -30,35 +32,15 @@ class LaunchesActivityTestWithMockWebServerData {
         @JvmField
         val mockWebServerRule = MockWebServerWithAllDataRule()
 
-        @JvmStatic
-        @BeforeClass
-        fun serverSetup() {
-            idlingRegistrySetup()
-        }
-
-        private fun idlingRegistrySetup() {
-            IdlingRegistry.getInstance()
-                .register(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
-            IdlingRegistry.getInstance()
-                .register(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
-            IdlingRegistry.getInstance()
-                .register(CountingIdlingResourceSingleton.countingIdlingResFilterFrag)
-        }
-
-        @JvmStatic
-        @AfterClass
-        fun serverTeardown() {
-            idlingRegistryTearDown()
-        }
-
-        private fun idlingRegistryTearDown() {
-            IdlingRegistry.getInstance()
-                .unregister(CountingIdlingResourceSingleton.countingIdlingResCompanyInfo)
-            IdlingRegistry.getInstance()
-                .unregister(CountingIdlingResourceSingleton.countingIdlingResAllLaunches)
-            IdlingRegistry.getInstance()
-                .unregister(CountingIdlingResourceSingleton.countingIdlingResFilterFrag)
-        }
+        @ClassRule
+        @JvmField
+        val idlingRegistryRule = IdlingRegistryRule(
+            listOf<CountingIdlingResource>(
+                CountingIdlingResourceSingleton.countingIdlingResCompanyInfo,
+                CountingIdlingResourceSingleton.countingIdlingResAllLaunches,
+                CountingIdlingResourceSingleton.countingIdlingResFilterFrag,
+            )
+        )
     }
 
 
